@@ -6,6 +6,7 @@
 package oservidor;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -35,11 +36,13 @@ public class Servidor extends Thread {
                 try {
                     Socket s = serverSocket.accept();
                     // Ler o nome do cliente
-                    BufferedReader din = new BufferedReader(s.getInputStream());
+                    DataInputStream din = new DataInputStream(s.getInputStream());
                     // criando a classe usuario
-                    String nome = din.readLine();
+                    String nome = din.readUTF();
                     // adicionando na lista.
-                    listaDeUsuarios.add(new Usuario(nome, s));
+                    if(listaDeUsuarios.add(new Usuario(nome, s))){
+                        System.out.println(nome + " conectado. IP " + s.getInetAddress());
+                    }
                     
                 } catch (IOException ex) {
                     System.out.println("Erro criando Socket.");
