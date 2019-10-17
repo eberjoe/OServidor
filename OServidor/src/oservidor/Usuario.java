@@ -5,6 +5,9 @@
  */
 package oservidor;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.Socket;
 
 /**
@@ -35,9 +38,22 @@ class Usuario extends Thread {
      * entre os usuarios.
      */
     public void run(){
-        do {
+        try {
+            //Criando o Data Input para ler a mensagem enviada pelo OCliente.
+            InputStream inp = socket.getInputStream();
+            DataInputStream din = new DataInputStream(inp);
+            String usuario, texto;
             
-        }while(true);
+            do {
+                    usuario = din.readUTF();
+                    texto = din.readUTF();
+                    System.out.println("SERVIDOR: usuario: "+usuario);
+                    System.out.println("SERVIDOR: texto: "+texto);
+            } while (true);
+        }
+        catch(IOException ex) {
+            System.out.println("Erro Usuario "+ex.getMessage());
+        }
     }
     
 }
