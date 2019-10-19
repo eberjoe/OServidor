@@ -31,6 +31,7 @@ public class Servidor extends Thread {
     
     public void run() {
         if(serverSocket != null) {
+            Usuario novo;
             do{
                 try {
                     Socket s = serverSocket.accept();
@@ -39,8 +40,10 @@ public class Servidor extends Thread {
                     // criando a classe usuario
                     String nome = din.readUTF();
                     // adicionando na lista.
-                    if(listaDeUsuarios.add(new Usuario(nome, s))){
+                    novo = new Usuario(nome, s);
+                    if(listaDeUsuarios.add(novo)){
                         System.out.println(nome + " conectado. IP " + s.getInetAddress());
+                        novo.start();
                     }
                     
                 } catch (IOException ex) {

@@ -43,12 +43,15 @@ class Usuario extends Thread {
             InputStream inp = socket.getInputStream();
             DataInputStream din = new DataInputStream(inp);
             String usuario, texto;
+            String linha;
             
             do {
-                    usuario = din.readUTF();
-                    texto = din.readUTF();
-                    System.out.println("SERVIDOR: usuario: "+usuario);
-                    System.out.println("SERVIDOR: texto: "+texto);
+                    linha = din.readUTF();
+                    System.out.println("SERVIDOR: " + linha);
+//                    usuario = din.readUTF();
+//                    texto = din.readUTF();
+//                    System.out.println("SERVIDOR: usuario: "+usuario);
+//                    System.out.println("SERVIDOR: texto: "+texto);
             } while (true);
         }
         catch(IOException ex) {
