@@ -60,10 +60,18 @@ public class Servidor extends Thread {
 
     void send(String nome, String texto) {
         try {
+            boolean found = false;
             for(Usuario u : listaDeUsuarios) {
                 if(u.getNome().equalsIgnoreCase(nome)) {
                     u.post(texto);
+                    found = true;
                 }
+            }
+            if(found) {
+                 System.out.println("Mensagem sent to " + nome);
+            }
+            else {
+                System.out.println("Usuario nao encontrado: " + nome);
             }
         }
         catch(NullPointerException e) {

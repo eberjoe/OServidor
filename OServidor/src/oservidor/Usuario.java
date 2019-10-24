@@ -68,8 +68,8 @@ class Usuario extends Thread {
                 elementosDaMensagem = mensagem.split("->");
                 toUsuario = elementosDaMensagem[0];
                 texto = elementosDaMensagem[1];
-                System.out.println("SERVIDOR: usuario: " + toUsuario);
-                System.out.println("SERVIDOR: line: " + texto);
+//                System.out.println("SERVIDOR: usuario: " + toUsuario);
+//                System.out.println("SERVIDOR: line: " + texto);
                 server.send(toUsuario, texto);
             } while (!texto.equalsIgnoreCase("sair"));
         } catch (IOException ex) {
