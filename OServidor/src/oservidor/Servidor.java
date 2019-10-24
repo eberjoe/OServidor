@@ -5,8 +5,10 @@
  */
 package oservidor;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
@@ -36,13 +38,16 @@ public class Servidor extends Thread {
                 try {
                     Socket s = serverSocket.accept();
                     // Ler o nome do cliente
-                    DataInputStream din = new DataInputStream(s.getInputStream());
-                    // criando a classe usuario
-                    String nome = din.readUTF();
-                    // adicionando na lista.
-                    novo = new Usuario(nome, s);
+                    InputStreamReader din = new InputStreamReader(s.getInputStream());
+                    BufferedReader bread = new BufferedReader(din);
+                    // Lendo o nome do usuario do stream.
+                    String nome = bread.readLine();
+                    // criando um novo usuario
+                    novo = new Usuario(this, nome, s);
+                    //Adicionando o novo usuario na lista de usuarios.
                     if(listaDeUsuarios.add(novo)){
                         System.out.println(nome + " conectado. IP " + s.getInetAddress());
+                        //inicializando a thread Usuario para este novo objeto.
                         novo.start();
                     }
                     
@@ -50,6 +55,19 @@ public class Servidor extends Thread {
                     System.out.println("Erro criando Socket.");
                 }
             }while(true);
+        }
+    }
+
+    void send(String nome, String texto) {
+        try {
+            for(Usuario u : listaDeUsuarios) {
+                if(u.getNome().equalsIgnoreCase(nome)) {
+                    u.post(texto);
+                }
+            }
+        }
+        catch(NullPointerException e) {
+            System.out.println("Erro no send " + e.getMessage());
         }
     }
     
