@@ -70,7 +70,7 @@ class Usuario extends Thread {
                 texto = elementosDaMensagem[1];
 //                System.out.println("SERVIDOR: usuario: " + toUsuario);
 //                System.out.println("SERVIDOR: line: " + texto);
-                server.send(toUsuario, texto);
+                server.send(this.nome, toUsuario, texto);
             } while (!texto.equalsIgnoreCase("sair"));
         } catch (IOException ex) {
             System.out.println("Erro Usuario " + ex.getMessage());

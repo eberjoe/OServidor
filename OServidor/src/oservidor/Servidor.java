@@ -49,8 +49,16 @@ public class Servidor extends Thread {
                         System.out.println(nome + " conectado. IP " + s.getInetAddress());
                         //inicializando a thread Usuario para este novo objeto.
                         novo.start();
-                    }
-                    
+                        // atualizando lista de usuarios.
+                        String lista = "lista->";
+                       for(Usuario r : listaDeUsuarios) {
+                           lista = lista + r.getNome() + ",";
+                       }
+                       //enviando a nova lista para cada usuario conectado.
+                       for(Usuario r : listaDeUsuarios) {
+                           send("servidor", r.getNome(), lista);
+                       }
+                    } 
                 } catch (IOException ex) {
                     System.out.println("Erro criando Socket.");
                 }
@@ -58,20 +66,20 @@ public class Servidor extends Thread {
         }
     }
 
-    void send(String nome, String texto) {
+    void send(String remetente, String destinatario, String texto) {
         try {
             boolean found = false;
             for(Usuario u : listaDeUsuarios) {
-                if(u.getNome().equalsIgnoreCase(nome)) {
-                    u.post(texto);
+                if(u.getNome().equalsIgnoreCase(destinatario)) {
+                    u.post(remetente + "->" + texto);
                     found = true;
                 }
             }
             if(found) {
-                 System.out.println("Mensagem sent to " + nome);
+                 System.out.println("Mensagem sent to " + destinatario);
             }
             else {
-                System.out.println("Usuario nao encontrado: " + nome);
+                System.out.println("Usuario nao encontrado: " + destinatario);
             }
         }
         catch(NullPointerException e) {
